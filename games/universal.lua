@@ -2145,67 +2145,6 @@ run(function()
 			return val == 1 and 'second' or 'seconds'
 		end
 	})
-	BounceLength = Fly:CreateSlider({
-		Name = 'Bounce Length',
-		Min = 0,
-		Max = 30,
-		Darker = true,
-		Visible = false,
-		Suffix = function(val)
-			return val == 1 and 'stud' or 'studs'
-		end
-	})
-	BounceDelay = Fly:CreateSlider({
-		Name = 'Bounce Delay',
-		Min = 0,
-		Max = 1,
-		Decimal = 100,
-		Darker = true,
-		Visible = false,
-		Suffix = function(val)
-			return val == 1 and 'second' or 'seconds'
-		end
-	})
-	FloatTPGround = Fly:CreateSlider({
-		Name = 'Ground',
-		Min = 0,
-		Max = 1,
-		Decimal = 10,
-		Default = 0.1,
-		Darker = true,
-		Visible = false,
-		Suffix = function(val)
-			return val == 1 and 'second' or 'seconds'
-		end
-	})
-	FloatTPAir = Fly:CreateSlider({
-		Name = 'Air',
-		Min = 0,
-		Max = 5,
-		Decimal = 10,
-		Default = 2,
-		Darker = true,
-		Visible = false,
-		Suffix = function(val)
-			return val == 1 and 'second' or 'seconds'
-		end
-	})
-	WallCheck = Fly:CreateToggle({
-		Name = 'Wall Check',
-		Default = true,
-		Darker = true,
-		Visible = false
-	})
-	Options.WallCheck = WallCheck
-	PlatformStanding = Fly:CreateToggle({
-		Name = 'PlatformStand',
-		Function = function(callback)
-			if Fly.Enabled then
-				entitylib.character.Humanoid.PlatformStand = callback
-			end
-		end,
-		Tooltip = 'Forces the character to look infront of the camera'
-	})
 	CustomProperties = Fly:CreateToggle({
 		Name = 'Custom Properties',
 		Function = function()
@@ -2216,11 +2155,10 @@ run(function()
 		end,
 		Default = true
 	})
-end)
-	
-run(function()
-	local HighJump
-	local Mode
+	end)
+
+	run(function()
+	local HighJump	local Mode
 	local Value
 	local AutoDisable
 	
