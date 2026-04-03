@@ -2155,9 +2155,9 @@ run(function()
 		end,
 		Default = true
 	})
-	end)
+end)
 
-	run(function()
+run(function()
 	local HighJump	local Mode
 	local Value
 	local AutoDisable
