@@ -1300,23 +1300,68 @@ run(function()
 		return (lplr.Team and lplr.Team.Name == 'Red' and 'Blue' or 'Red') or 'Unknown'
 	end
 
+	local FlagJumpMode
+	local FlagJumpSpeed
+	local FlagJumpDelay
 	local FlagJump = vape.Categories.Blatant:CreateModule({
 		Name = 'FlagJump',
 		Function = function(callback)
 			if callback then
+				local tickCount = 0
 				FlagJump:Clean(runService.Heartbeat:Connect(function(dt)
 					if entitylib.isAlive then
+						tickCount = tickCount + 1
 						local root = entitylib.character.RootPart
 						local moveDir = entitylib.character.Humanoid.MoveDirection
 						if moveDir.Magnitude > 0 then
-							entitylib.character.Humanoid.Jump = true
-							root.AssemblyLinearVelocity = Vector3.new(moveDir.X * 150, root.AssemblyLinearVelocity.Y, moveDir.Z * 150)
+							if FlagJumpMode.Value == 'Velocity' then
+								entitylib.character.Humanoid.Jump = true
+								root.AssemblyLinearVelocity = Vector3.new(moveDir.X * FlagJumpSpeed.Value, root.AssemblyLinearVelocity.Y, moveDir.Z * FlagJumpSpeed.Value)
+							elseif FlagJumpMode.Value == 'CFrame' then
+								if tickCount % math.max(1, math.floor(FlagJumpDelay.Value)) == 0 then
+									root.CFrame = root.CFrame + (moveDir * FlagJumpSpeed.Value * dt)
+								end
+							elseif FlagJumpMode.Value == 'Impulse' then
+								root:ApplyImpulse(moveDir * FlagJumpSpeed.Value * 10)
+							elseif FlagJumpMode.Value == 'TP' then
+								if tickCount % math.max(1, math.floor(FlagJumpDelay.Value)) == 0 then
+									root.CFrame = root.CFrame + (moveDir * FlagJumpSpeed.Value * 0.1)
+								end
+							end
 						end
 					end
 				end))
+			else
+				if entitylib.isAlive then
+					local root = entitylib.character.RootPart
+					root.AssemblyLinearVelocity = Vector3.new(0, -10, 0)
+					entitylib.character.Humanoid.Jump = false
+					root.Anchored = true
+					task.delay(0.15, function()
+						if entitylib.isAlive then
+							root.Anchored = false
+						end
+					end)
+				end
 			end
 		end,
 		Tooltip = 'Abuses the anticheat to launch you by forcing flags'
+	})
+	FlagJumpMode = FlagJump:CreateDropdown({
+		Name = 'Mode',
+		List = {'Velocity', 'CFrame', 'Impulse', 'TP'}
+	})
+	FlagJumpSpeed = FlagJump:CreateSlider({
+		Name = 'Speed',
+		Min = 10,
+		Max = 500,
+		Default = 150
+	})
+	FlagJumpDelay = FlagJump:CreateSlider({
+		Name = 'Tick Delay',
+		Min = 1,
+		Max = 10,
+		Default = 1
 	})
 
 	AutoWin = vape.Categories.Blatant:CreateModule({

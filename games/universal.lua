@@ -326,7 +326,7 @@ SpeedMethods = {
 	Tween = function(options, moveDirection, dt)
 		local root = entitylib.character.RootPart
 		root.AssemblyLinearVelocity = Vector3.zero
-		local dest = root.Position + (moveDirection * math.max(options.Value.Value - entitylib.character.Humanoid.WalkSpeed, 0) * dt)
+		local dest = root.Position + (moveDirection * options.Value.Value * dt)
 		if YLevel then
 			dest = Vector3.new(dest.X, YLevel, dest.Z)
 		end
@@ -1888,9 +1888,8 @@ run(function()
 			if not YLevel then
 				YLevel = root.Position.Y
 			end
-			YLevel = YLevel + ((up + down) * VerticalValue.Value * dt) - (0.5 * dt)
-			root.Velocity *= Vector3.new(1, 0, 1)
-			root.CFrame += Vector3.new(0, YLevel - root.Position.Y, 0)
+			YLevel = YLevel + ((up + down) * VerticalValue.Value * dt) - (15 * dt)
+			root.Velocity = Vector3.new(root.Velocity.X, (YLevel - root.Position.Y) * (dt * 600), root.Velocity.Z)
 		end
 	}
 
