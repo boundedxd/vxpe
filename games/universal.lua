@@ -2039,6 +2039,11 @@ run(function()
 		Darker = true,
 		Visible = false
 	})
+	FlagOverwrite = Fly:CreateDropdown({
+		Name = 'Flag Overwrite',
+		List = {'None', 'AutoFarm', 'CFrame'},
+		Tooltip = 'AutoFarm - Sets velocity to zero periodically\nCFrame - Teleports away and back periodically'
+	})
 	Mode = Fly:CreateDropdown({
 		Name = 'Speed Mode',
 		List = SpeedMethodList,
