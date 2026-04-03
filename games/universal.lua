@@ -2034,6 +2034,15 @@ run(function()
 			return val == 1 and 'stud' or 'studs'
 		end
 	})
+	Options.TweenSpeed = Fly:CreateSlider({
+		Name = 'Tween Speed',
+		Min = 1,
+		Max = 500,
+		Default = 50,
+		Suffix = function(val)
+			return val == 1 and 'stud' or 'studs'
+		end
+	})
 	VerticalValue = Fly:CreateSlider({
 		Name = 'Vertical Speed',
 		Min = 1,
