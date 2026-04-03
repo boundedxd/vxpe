@@ -1983,6 +1983,43 @@ run(function()
 		end,
 		Tooltip = 'Makes you go zoom.'
 	})
+
+	Options.Value = Fly:CreateSlider({
+		Name = 'Speed',
+		Min = 1,
+		Max = 150,
+		Default = 50,
+		Suffix = function(val)
+			return val == 1 and 'stud' or 'studs'
+		end
+	})
+	Options.TweenSpeed = Fly:CreateSlider({
+		Name = 'Tween Speed',
+		Min = 1,
+		Max = 5000,
+		Default = 500,
+		Suffix = function(val)
+			return val == 1 and 'stud' or 'studs'
+		end
+	})
+	DamageMode = Fly:CreateDropdown({
+		Name = 'Damage Mode',
+		List = {'None', 'Fall', 'Workspace'},
+		Function = function(val)
+			if DamageValue and DamageValue.Object then
+				DamageValue.Object.Visible = val == 'Workspace'
+			end
+		end,
+		Tooltip = 'Takes damage when enabling fly to bypass anti-cheat'
+	})
+	DamageValue = Fly:CreateSlider({
+		Name = 'Damage Amount',
+		Min = 1,
+		Max = 99,
+		Default = 5,
+		Darker = true,
+		Visible = false
+	})
 	Mode = Fly:CreateDropdown({
 		Name = 'Speed Mode',
 		List = SpeedMethodList,
@@ -2023,26 +2060,7 @@ run(function()
 		end,
 		Tooltip = 'Velocity - Uses smooth physics based movement\nImpulse - Same as velocity while using forces instead\nCFrame - Directly adjusts the position of the root\nTP - Teleports you to the ground within intervals\nFloor - Spawns a part under you\nJump - Presses space after going below a certain Y Level\nBounce - Vertical bouncing motion\nGlide - Slowly glides down while flying'
 	})
-	local states = {'None'}
-	for _, v in Enum.HumanoidStateType:GetEnumItems() do
-		if v.Name ~= 'Dead' and v.Name ~= 'None' then
-			table.insert(states, v.Name)
-		end
-	end
-	State = Fly:CreateDropdown({
-		Name = 'Humanoid State',
-		List = states
-	})
-	MoveMethod = Fly:CreateDropdown({
-		Name = 'Move Mode',
-		List = {'MoveDirection', 'Direct'},
-		Tooltip = 'MoveDirection - Uses the games input vector for movement\nDirect - Directly calculate our own input vector'
-	})
-	Keys = Fly:CreateDropdown({
-		Name = 'Keys',
-		List = {'Space/LeftControl', 'Space/LeftShift', 'E/Q', 'Space/Q', 'ButtonA/ButtonL2'},
-		Tooltip = 'The key combination for going up & down'
-	})
+
 	Options.Value = Fly:CreateSlider({
 		Name = 'Speed',
 		Min = 1,
