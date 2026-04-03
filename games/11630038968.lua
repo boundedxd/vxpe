@@ -1300,6 +1300,25 @@ run(function()
 		return (lplr.Team and lplr.Team.Name == 'Red' and 'Blue' or 'Red') or 'Unknown'
 	end
 
+	local FlagJump = vape.Categories.Blatant:CreateModule({
+		Name = 'FlagJump',
+		Function = function(callback)
+			if callback then
+				FlagJump:Clean(runService.Heartbeat:Connect(function(dt)
+					if entitylib.isAlive then
+						local root = entitylib.character.RootPart
+						local moveDir = entitylib.character.Humanoid.MoveDirection
+						if moveDir.Magnitude > 0 then
+							entitylib.character.Humanoid.Jump = true
+							root.AssemblyLinearVelocity = Vector3.new(moveDir.X * 150, root.AssemblyLinearVelocity.Y, moveDir.Z * 150)
+						end
+					end
+				end))
+			end
+		end,
+		Tooltip = 'Abuses the anticheat to launch you by forcing flags'
+	})
+
 	AutoWin = vape.Categories.Blatant:CreateModule({
 		Name = 'AutoFarm',
 		Function = function(callback)

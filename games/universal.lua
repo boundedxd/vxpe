@@ -325,7 +325,11 @@ SpeedMethods = {
 	end,
 	Tween = function(options, moveDirection, dt)
 		local root = entitylib.character.RootPart
+		root.AssemblyLinearVelocity = Vector3.zero
 		local dest = root.Position + (moveDirection * math.max(options.Value.Value - entitylib.character.Humanoid.WalkSpeed, 0) * dt)
+		if YLevel then
+			dest = Vector3.new(dest.X, YLevel, dest.Z)
+		end
 		if options.WallCheck and options.WallCheck.Enabled then
 			options.rayCheck.FilterDescendantsInstances = {lplr.Character, gameCamera}
 			options.rayCheck.CollisionGroup = root.CollisionGroup
@@ -334,7 +338,7 @@ SpeedMethods = {
 				dest = ((ray.Position + ray.Normal) - root.Position) + root.Position
 			end
 		end
-		tweenService:Create(root, TweenInfo.new(dt, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Position = dest}):Play()
+		tweenService:Create(root, TweenInfo.new(dt, Enum.EasingStyle.Linear, Enum.EasingDirection.Linear), {Position = dest}):Play()
 	end
 }
 for name in SpeedMethods do
