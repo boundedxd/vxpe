@@ -68,7 +68,7 @@ if not shared.VapeDeveloper then
 	local _, subbed = pcall(function()
 		return game:HttpGet('https://github.com/boundedxd/vxpe/tree/main41')
 	end)
-	local commit = subbed:find('currentOid')
+	local commit = type(subbed) == 'string' and subbed:find('currentOid') or nil
 	commit = commit and subbed:sub(commit + 13, commit + 52) or nil
 	commit = commit and #commit == 40 and commit or 'main41'
 	if commit == 'main41' or (isfile('newvape/profiles/commit.txt') and readfile('newvape/profiles/commit.txt') or '') ~= commit then

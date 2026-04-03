@@ -1814,7 +1814,7 @@ run(function()
 	local CustomProperties
 	local WallCheck
 	local PlatformStanding
-	local Platform, YLevel, OldYLevel
+	local Platform, OldYLevel
 	local w, s, a, d, up, down = 0, 0, 0, 0, 0, 0
 	local rayCheck = RaycastParams.new()
 	rayCheck.RespectCanCollide = true
@@ -8177,6 +8177,9 @@ run(function()
 			if TimeChanger.Enabled then 
 				lightingService.TimeOfDay = val..':00:00'
 			end
+		end
+	})
+end)	end
 		end
 	})
 end)
