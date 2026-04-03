@@ -326,7 +326,8 @@ SpeedMethods = {
 	Tween = function(options, moveDirection, dt)
 		local root = entitylib.character.RootPart
 		root.AssemblyLinearVelocity = Vector3.zero
-		local dest = root.Position + (moveDirection * options.Value.Value * dt)
+		local speed = options.TweenSpeed and options.TweenSpeed.Value or options.Value.Value
+		local dest = root.Position + (moveDirection * speed * dt)
 		if YLevel then
 			dest = Vector3.new(dest.X, YLevel, dest.Z)
 		end
@@ -1803,6 +1804,8 @@ run(function()
 	local Options = {TPTiming = tick()}
 	local Mode
 	local FloatMode
+	local DamageMode
+	local DamageValue
 	local State
 	local MoveMethod
 	local Keys
