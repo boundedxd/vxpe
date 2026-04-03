@@ -1303,7 +1303,8 @@ run(function()
 	local FlagJumpMode
 	local FlagJumpSpeed
 	local FlagJumpDelay
-	local FlagJump = vape.Categories.Blatant:CreateModule({
+	local FlagJump
+	FlagJump = vape.Categories.Blatant:CreateModule({
 		Name = 'FlagJump',
 		Function = function(callback)
 			if callback then
