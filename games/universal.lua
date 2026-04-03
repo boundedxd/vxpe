@@ -1905,6 +1905,24 @@ run(function()
 			frictionTable.Fly = callback and CustomProperties.Enabled or nil
 			updateVelocity()
 			if callback then
+				if DamageMode and DamageMode.Value == 'Fall' then
+					task.spawn(function()
+						if entitylib.isAlive then
+							local root = entitylib.character.RootPart
+							local oldCF = root.CFrame
+							root.CFrame = oldCF + Vector3.new(0, 50, 0)
+							task.wait(0.15)
+							root.CFrame = oldCF
+						end
+					end)
+				elseif DamageMode and DamageMode.Value == 'Workspace' then
+					task.spawn(function()
+						if entitylib.isAlive then
+							entitylib.character.Humanoid.Health = entitylib.character.Humanoid.Health - (DamageValue and DamageValue.Value or 5)
+						end
+					end)
+				end
+
 				Fly:Clean(runService.PreSimulation:Connect(function(dt)
 					if entitylib.isAlive then
 						if PlatformStanding.Enabled then
