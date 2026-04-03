@@ -326,20 +326,20 @@ SpeedMethods = {
 	Tween = function(options, moveDirection, dt)
 		local root = entitylib.character.RootPart
 		root.AssemblyLinearVelocity = Vector3.zero
-		local speed = options.TweenSpeed and options.TweenSpeed.Value or options.Value.Value
-		local dest = root.Position + (moveDirection * speed * dt)
+		local speed = (options.TweenSpeed and options.TweenSpeed.Value) or options.Value.Value
+		local targetPos = root.Position + (moveDirection * speed * dt)
 		if YLevel then
-			dest = Vector3.new(dest.X, YLevel, dest.Z)
+			targetPos = Vector3.new(targetPos.X, YLevel, targetPos.Z)
 		end
 		if options.WallCheck and options.WallCheck.Enabled then
 			options.rayCheck.FilterDescendantsInstances = {lplr.Character, gameCamera}
 			options.rayCheck.CollisionGroup = root.CollisionGroup
-			local ray = workspace:Raycast(root.Position, dest - root.Position, options.rayCheck)
+			local ray = workspace:Raycast(root.Position, targetPos - root.Position, options.rayCheck)
 			if ray then
-				dest = ((ray.Position + ray.Normal) - root.Position) + root.Position
+				targetPos = ((ray.Position + ray.Normal) - root.Position) + root.Position
 			end
 		end
-		tweenService:Create(root, TweenInfo.new(dt, Enum.EasingStyle.Linear, Enum.EasingDirection.Linear), {Position = dest}):Play()
+		root.CFrame = root.CFrame:Lerp(CFrame.new(targetPos) * root.CFrame.Rotation, 0.5)
 	end
 }
 for name in SpeedMethods do
@@ -1806,6 +1806,7 @@ run(function()
 	local FloatMode
 	local DamageMode
 	local DamageValue
+	local FlagOverwrite
 	local State
 	local MoveMethod
 	local Keys
@@ -1933,6 +1934,24 @@ run(function()
 						if State.Value ~= 'None' then
 							entitylib.character.Humanoid:ChangeState(Enum.HumanoidStateType[State.Value])
 						end
+
+						if FlagOverwrite.Value == 'AutoFarm' then
+							if tick() % 0.5 < 0.05 then
+								entitylib.character.RootPart.AssemblyLinearVelocity = Vector3.zero
+								entitylib.character.RootPart.AssemblyAngularVelocity = Vector3.zero
+							end
+						elseif FlagOverwrite.Value == 'CFrame' then
+							if tick() % 0.5 < 0.05 then
+								local oldCF = entitylib.character.RootPart.CFrame
+								entitylib.character.RootPart.CFrame = oldCF + Vector3.new(0, 1000, 0)
+								task.delay(0, function() 
+									if entitylib.isAlive then
+										entitylib.character.RootPart.CFrame = oldCF 
+									end
+								end)
+							end
+						end
+
 						SpeedMethods[Mode.Value](Options, TargetStrafeVector or MoveMethod.Value == 'Direct' and calculateMoveVector(Vector3.new(a + d, 0, w + s)) or entitylib.character.Humanoid.MoveDirection, dt)
 						Functions[FloatMode.Value](dt)
 					else
